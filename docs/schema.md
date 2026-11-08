@@ -15,7 +15,7 @@
 - `isCompleted`: bool (false by default)
 - `count`: int
 - `assignedDate`: DateTime
-- `completedDate`: DateTime?
+- `closedDate`: DateTime?
 
 ## Collection: DayProgress
 - `id`: Id (Isar.autoIncrement)
