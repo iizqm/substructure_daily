@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.substructure_daily"
+    namespace = "com.iizqm.substructure_daily"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
