@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:substructure_daily/cubits/today/today_cubit.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'data/isar_service.dart';
+import 'data/task_repository.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sub-Structure Daily',
-      home: const Scaffold(body: Center(child: Text("Sub-Structure Daily"))),
-    );
-  }
+  final isarService = IsarService();
+  await isarService.init();
+
+  final taskRepository = TaskRepository(isarService.isar);
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => TodayCubit(taskRepository)..loadTasks()),
+      ],
+      child: const MaterialApp(home: Text("TODO")),
+    ),
+  );
 }
