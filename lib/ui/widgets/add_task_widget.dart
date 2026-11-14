@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubits/prefab/prefab_cubit.dart';
 import '../../cubits/today/today_cubit.dart';
 import 'add_task_dialog.dart';
 
@@ -20,8 +21,11 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
       barrierDismissible: true,
       barrierLabel: 'Close',
       pageBuilder: (dialogContext, _, _) {
-        return BlocProvider.value(
-          value: context.read<TodayCubit>(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: context.read<TodayCubit>()),
+            BlocProvider.value(value: context.read<PrefabCubit>()),
+          ],
           child: Center(
             child: Material(
               type: MaterialType.transparency,
