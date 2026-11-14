@@ -35,8 +35,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 320, maxHeight: 420),
-        child: Container(
-          decoration: const BoxDecoration(color: Colors.white),
+        child: Material(
+          color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Column(
