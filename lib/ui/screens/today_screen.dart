@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/task_repository.dart';
-import '../view/today_view.dart';
+import 'today_view.dart';
 import '../../cubits/today/today_cubit.dart';
 
 class TodayScreen extends StatelessWidget {
