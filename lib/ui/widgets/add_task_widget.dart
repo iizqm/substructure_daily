@@ -15,58 +15,112 @@ class AddTaskWidget extends StatefulWidget {
 class _AddTaskWidgetState extends State<AddTaskWidget> {
   final TextEditingController _textEditingController = TextEditingController();
 
-  void openAddTaskDialog(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel: 'Close',
-      pageBuilder: (dialogContext, _, _) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider.value(value: context.read<TodayCubit>()),
-            BlocProvider.value(value: context.read<PrefabCubit>()),
-          ],
-          child: Center(
-            child: Material(
-              type: MaterialType.transparency,
-              child: AddTaskDialog(
-                taskTitle: _textEditingController.text,
-                textEditingController: _textEditingController,
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                style: const TextStyle(fontSize: 18, height: 1.0),
+                cursorColor: Colors.yellow,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 0,
+                  ),
+                  hintText: "Task Title",
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.grey, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                  ),
+                ),
+                controller: _textEditingController,
               ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8, bottom: 8, right: 8),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: _AddTaskButton(_textEditingController),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+}
+
+class _AddTaskButton extends StatelessWidget {
+  final TextEditingController textEditingController;
+  const _AddTaskButton(this.textEditingController);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: textEditingController,
+      builder: (context, value, child) {
+        final bool isActive = value.text.trim().isNotEmpty;
+
+        return GestureDetector(
+          onTap: isActive
+              ? () => _openAddTaskDialog(context, textEditingController)
+              : null,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: isActive ? Colors.white : Colors.grey,
+                width: 2,
+              ),
+            ),
+            child: Icon(
+              Icons.add,
+              color: isActive ? Colors.white : Colors.grey,
             ),
           ),
         );
       },
     );
   }
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(0)),
-                ),
-              ),
-              controller: _textEditingController,
+void _openAddTaskDialog(
+  BuildContext context,
+  TextEditingController textEditingController,
+) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: 'Close',
+    pageBuilder: (dialogContext, _, _) {
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.read<TodayCubit>()),
+          BlocProvider.value(value: context.read<PrefabCubit>()),
+        ],
+        child: Center(
+          child: Material(
+            type: MaterialType.transparency,
+            child: AddTaskDialog(
+              taskTitle: textEditingController.text,
+              textEditingController: textEditingController,
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsetsGeometry.only(right: 8.0),
-          child: IconButton(
-            onPressed: () {
-              openAddTaskDialog(context);
-            },
-            icon: const Icon(Icons.add),
-          ),
-        ),
-      ],
-    );
-  }
+      );
+    },
+  );
 }

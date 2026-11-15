@@ -28,31 +28,29 @@ class SegmentedSwitch<T> extends StatelessWidget {
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => onSelectionChanged(segment.value),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 120),
-            padding: const EdgeInsets.symmetric(vertical: 0),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? const Color(0xFF5D5FEF) // Цвет активного сегмента
-                  : Colors.transparent,
-              border: isSelected
-                  ? Border.all(color: Colors.white24, width: 1)
-                  : Border.all(color: Colors.transparent, width: 1),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  segment.label,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: isSelected
-                        ? FontWeight.bold
-                        : FontWeight.normal,
-                    color: isSelected ? Colors.white : Colors.black,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 120),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? const Color.fromARGB(255, 127, 134, 59)
+                    : const Color.fromARGB(255, 56, 56, 56),
+                border: isSelected
+                    ? Border.all(color: Colors.yellow, width: 2)
+                    : Border.all(color: Colors.grey, width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    segment.label,
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

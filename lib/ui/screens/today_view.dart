@@ -18,46 +18,100 @@ class TodayView extends StatelessWidget {
       (TodayCubit cubit) => cubit.state.incentiveTasks,
     );
     final tasks = context.select((TodayCubit cubit) => cubit.state.tasks);
-    return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: const Text('required'),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color.fromARGB(255, 37, 37, 37),
+            Color.fromARGB(255, 37, 37, 37),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text('required'),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: const Text('incentive'),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text('incentive'),
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverCrossAxisGroup(
+                slivers: [
+                  SliverCrossAxisExpanded(
+                    flex: 1,
+                    sliver: SliverPadding(
+                      padding: const EdgeInsets.only(left: 8, right: 4),
+                      sliver: _TasksSliverList(requiredTasks),
                     ),
-                  ],
+                  ),
+                  SliverCrossAxisExpanded(
+                    flex: 1,
+                    sliver: SliverPadding(
+                      padding: const EdgeInsets.only(left: 4, right: 8),
+                      sliver: _TasksSliverList(incentiveTasks),
+                    ),
+                  ),
+                ],
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: const Text('Tasks'),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                sliver: _TasksSliverList(tasks),
+              ),
+              SliverToBoxAdapter(child: AddTaskWidget()),
+            ],
+          ),
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(8),
+            child: Center(
+              heightFactor: 1.0,
+              child: GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.yellow, width: 5),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    "SCORE",
+                    style: TextStyle(
+                      fontSize: 44,
+                      height: 0,
+                      color: Colors.yellow,
+                    ),
+                  ),
                 ),
               ),
             ),
-            SliverCrossAxisGroup(
-              slivers: [
-                SliverCrossAxisExpanded(
-                  flex: 1,
-                  sliver: _TasksSliverList(requiredTasks),
-                ),
-                SliverCrossAxisExpanded(
-                  flex: 1,
-                  sliver: _TasksSliverList(incentiveTasks),
-                ),
-              ],
-            ),
-            _TasksSliverList(tasks),
-            SliverToBoxAdapter(child: AddTaskWidget()),
-          ],
+          ),
         ),
       ),
     );
@@ -72,8 +126,10 @@ class _TasksSliverList extends StatelessWidget {
   Widget build(BuildContext context) => SliverList.builder(
     itemCount: tasks.length,
     itemBuilder: (context, index) {
-      final task = tasks[index];
-      return ListTile(title: TaskWidget(task));
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: TaskWidget(tasks[index]),
+      );
     },
   );
 }

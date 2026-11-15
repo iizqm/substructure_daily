@@ -34,9 +34,13 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 320, maxHeight: 420),
-        child: Material(
-          color: Colors.white,
+        constraints: const BoxConstraints(maxWidth: 320, maxHeight: 320),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 37, 37, 37),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Column(
@@ -62,46 +66,81 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                   },
                 ),
                 if (prefabs.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Text('Нет префабов для этого типа'),
+                  const Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Text('No prefabs for this type'),
+                      ),
+                    ),
                   )
                 else
-                  Flexible(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: prefabs.length,
-                      itemBuilder: (context, index) {
-                        final prefab = prefabs[index];
-                        final isSelected = selectedPrefab?.id == prefab.id;
-                        return ListTile(
-                          selected: isSelected,
-                          title: Text(prefab.title),
-                          subtitle: Text(
-                            prefab.subValue > 0
-                                ? '${prefab.value} / ${prefab.subValue}'
-                                : '${prefab.value}',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: prefab == selectedPrefab
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: prefab == selectedPrefab
-                                  ? Colors.black
-                                  : Colors.blueGrey,
+                  Expanded(
+                    child: Flexible(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: prefabs.length,
+                        itemBuilder: (context, index) {
+                          final prefab = prefabs[index];
+                          final isSelected = selectedPrefab?.id == prefab.id;
+                          return GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              color: isSelected
+                                  ? const Color.fromARGB(255, 49, 49, 49)
+                                  : Colors.transparent,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      prefab.title,
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                  Text(
+                                    prefab.subValue > 0
+                                        ? '+${prefab.value.round()} +(${prefab.subValue.round()})'
+                                        : '+${prefab.value.round()}',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              selectedPrefab = prefab;
-                            });
-                          },
-                        );
-                      },
+                            onTap: () {
+                              setState(() {
+                                selectedPrefab = prefab;
+                              });
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                TextButton(
-                  onPressed: () {
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      border: Border.all(
+                        color: selectedPrefab != null
+                            ? Colors.white
+                            : Colors.grey,
+                        width: 2,
+                      ),
+                    ),
+                    child: Text(
+                      'Add Task',
+                      style: TextStyle(
+                        color: selectedPrefab != null
+                            ? Colors.white
+                            : Colors.grey,
+                      ),
+                    ),
+                  ),
+                  onTap: () {
                     if (selectedPrefab != null) {
                       context.read<TodayCubit>().addTask(
                         title: widget.taskTitle,
@@ -113,7 +152,6 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                       Navigator.of(context).pop();
                     }
                   },
-                  child: Text('Add Task'),
                 ),
               ],
             ),
