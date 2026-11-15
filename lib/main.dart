@@ -20,6 +20,14 @@ void main() async {
 
   runApp(
     MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Ticketing',
+        textTheme: ThemeData.light().textTheme.apply(
+          bodyColor: Colors.white,
+          displayColor: Colors.white,
+          fontFamily: 'Ticketing',
+        ),
+      ),
       home: TodayScreen(
         taskRepository: taskRepository,
         prefabRepository: prefabRepository,
