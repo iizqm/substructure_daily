@@ -15,32 +15,35 @@ class TaskWidget extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: Text(itemTask.title)),
-        itemTask.type == TaskType.checkable
-            ? IconButton(
+        switch (itemTask.type) {
+          TaskType.required ||
+          TaskType.incentive ||
+          TaskType.checkable => IconButton(
+            onPressed: () {
+              context.read<TodayCubit>().toggleTask(itemTask);
+            },
+            icon: itemTask.isCompleted
+                ? Icon(Icons.circle)
+                : Icon(Icons.circle_outlined),
+          ),
+          TaskType.countable => Row(
+            children: [
+              IconButton(
                 onPressed: () {
-                  context.read<TodayCubit>().toggleTask(itemTask);
+                  context.read<TodayCubit>().decrementCount(itemTask);
                 },
-                icon: itemTask.isCompleted
-                    ? Icon(Icons.circle)
-                    : Icon(Icons.circle_outlined),
-              )
-            : Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      context.read<TodayCubit>().decrementCount(itemTask);
-                    },
-                    icon: Icon(Icons.arrow_left),
-                  ),
-                  Text(itemTask.count.toString()),
-                  IconButton(
-                    onPressed: () {
-                      context.read<TodayCubit>().incrementCount(itemTask);
-                    },
-                    icon: Icon(Icons.arrow_right),
-                  ),
-                ],
+                icon: Icon(Icons.arrow_left),
               ),
+              Text(itemTask.count.toString()),
+              IconButton(
+                onPressed: () {
+                  context.read<TodayCubit>().incrementCount(itemTask);
+                },
+                icon: Icon(Icons.arrow_right),
+              ),
+            ],
+          ),
+        },
       ],
     );
   }
