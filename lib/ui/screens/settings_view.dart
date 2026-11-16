@@ -22,6 +22,7 @@ class SettingsView extends StatelessWidget {
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Color.fromARGB(255, 37, 37, 37),
           title: Text('SETTINGS', style: TextStyle(color: Colors.white)),
           actions: [

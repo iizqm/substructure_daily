@@ -35,6 +35,7 @@ class TodayView extends StatelessWidget {
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Color.fromARGB(255, 37, 37, 37),
           title: Text(
             'SUB-STRUCTURE DAILY',
