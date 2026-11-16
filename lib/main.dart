@@ -28,10 +28,13 @@ void main() async {
           fontFamily: 'Ticketing',
         ),
       ),
-      home: TodayScreen(
-        taskRepository: taskRepository,
-        prefabRepository: prefabRepository,
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => TodayScreen(
+          taskRepository: taskRepository,
+          prefabRepository: prefabRepository,
+        ),
+      },
     ),
   );
 }

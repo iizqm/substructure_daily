@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:substructure_daily/ui/widgets/app_drawer.dart';
 
 import '../../models/item_task.dart';
 import '../widgets/task_widget.dart';
@@ -33,6 +34,25 @@ class TodayView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
         extendBody: true,
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 37, 37, 37),
+          title: Text(
+            'SUB-STRUCTURE DAILY',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            Builder(
+              builder: (context) => AspectRatio(
+                aspectRatio: 1,
+                child: GestureDetector(
+                  child: const Icon(Icons.menu, color: Colors.white),
+                  onTap: () => Scaffold.of(context).openEndDrawer(),
+                ),
+              ),
+            ),
+          ],
+        ),
+        endDrawer: AppDrawer('/'),
         body: SafeArea(
           child: CustomScrollView(
             slivers: [
