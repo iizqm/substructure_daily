@@ -94,3 +94,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  fonts:
+    - family: Ticketing
+      fonts:
+        - asset: assets/fonts/Ticketing.ttf
+    - family: m3x6
+      fonts:
+        - asset: assets/fonts/m3x6.ttf
