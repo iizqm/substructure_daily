@@ -43,6 +43,11 @@ class AppDrawer extends StatelessWidget {
                 screen: '/',
                 isActive: currentScreen == '/',
               ),
+              _ScreenButton(
+                title: 'Settings',
+                screen: '/settings',
+                isActive: currentScreen == '/settings',
+              ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:substructure_daily/ui/screens/settings_screen.dart';
 
 import 'app_bloc_observer.dart';
 import 'ui/screens/today_screen.dart';
@@ -31,6 +32,10 @@ void main() async {
       initialRoute: '/',
       routes: {
         '/': (context) => TodayScreen(
+          taskRepository: taskRepository,
+          prefabRepository: prefabRepository,
+        ),
+        '/settings': (context) => SettingsScreen(
           taskRepository: taskRepository,
           prefabRepository: prefabRepository,
         ),
