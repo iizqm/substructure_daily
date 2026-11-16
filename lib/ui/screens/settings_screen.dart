@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:substructure_daily/cubits/prefab/prefab_cubit.dart';
-import 'package:substructure_daily/cubits/today/today_cubit.dart';
 import 'package:substructure_daily/data/prefab_repository.dart';
 import 'package:substructure_daily/data/task_repository.dart';
 import 'settings_view.dart';
