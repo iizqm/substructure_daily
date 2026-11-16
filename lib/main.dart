@@ -30,15 +30,28 @@ void main() async {
         ),
       ),
       initialRoute: '/',
-      routes: {
-        '/': (context) => TodayScreen(
-          taskRepository: taskRepository,
-          prefabRepository: prefabRepository,
-        ),
-        '/settings': (context) => SettingsScreen(
-          taskRepository: taskRepository,
-          prefabRepository: prefabRepository,
-        ),
+      onGenerateRoute: (settings) {
+        Widget page;
+        switch (settings.name) {
+          case '/settings':
+            page = SettingsScreen(
+              taskRepository: taskRepository,
+              prefabRepository: prefabRepository,
+            );
+            break;
+          case '/':
+          default:
+            page = TodayScreen(
+              taskRepository: taskRepository,
+              prefabRepository: prefabRepository,
+            );
+        }
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (_, _, _) => page,
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        );
       },
     ),
   );
