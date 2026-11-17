@@ -37,24 +37,29 @@ const ItemTaskSchema = CollectionSchema(
       name: r'isCompleted',
       type: IsarType.bool,
     ),
-    r'subValue': PropertySchema(
+    r'prefabId': PropertySchema(
       id: 4,
+      name: r'prefabId',
+      type: IsarType.long,
+    ),
+    r'subValue': PropertySchema(
+      id: 5,
       name: r'subValue',
       type: IsarType.double,
     ),
     r'title': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'type',
       type: IsarType.byte,
       enumMap: _ItemTasktypeEnumValueMap,
     ),
     r'value': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'value',
       type: IsarType.double,
     )
@@ -107,10 +112,11 @@ void _itemTaskSerialize(
   writer.writeDateTime(offsets[1], object.closedDate);
   writer.writeLong(offsets[2], object.count);
   writer.writeBool(offsets[3], object.isCompleted);
-  writer.writeDouble(offsets[4], object.subValue);
-  writer.writeString(offsets[5], object.title);
-  writer.writeByte(offsets[6], object.type.index);
-  writer.writeDouble(offsets[7], object.value);
+  writer.writeLong(offsets[4], object.prefabId);
+  writer.writeDouble(offsets[5], object.subValue);
+  writer.writeString(offsets[6], object.title);
+  writer.writeByte(offsets[7], object.type.index);
+  writer.writeDouble(offsets[8], object.value);
 }
 
 ItemTask _itemTaskDeserialize(
@@ -125,11 +131,12 @@ ItemTask _itemTaskDeserialize(
   object.count = reader.readLong(offsets[2]);
   object.id = id;
   object.isCompleted = reader.readBool(offsets[3]);
-  object.subValue = reader.readDouble(offsets[4]);
-  object.title = reader.readString(offsets[5]);
-  object.type = _ItemTasktypeValueEnumMap[reader.readByteOrNull(offsets[6])] ??
+  object.prefabId = reader.readLongOrNull(offsets[4]);
+  object.subValue = reader.readDouble(offsets[5]);
+  object.title = reader.readString(offsets[6]);
+  object.type = _ItemTasktypeValueEnumMap[reader.readByteOrNull(offsets[7])] ??
       TaskType.required;
-  object.value = reader.readDouble(offsets[7]);
+  object.value = reader.readDouble(offsets[8]);
   return object;
 }
 
@@ -149,13 +156,15 @@ P _itemTaskDeserializeProp<P>(
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (_ItemTasktypeValueEnumMap[reader.readByteOrNull(offset)] ??
           TaskType.required) as P;
-    case 7:
+    case 8:
       return (reader.readDouble(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -601,6 +610,75 @@ extension ItemTaskQueryFilter
     });
   }
 
+  QueryBuilder<ItemTask, ItemTask, QAfterFilterCondition> prefabIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'prefabId',
+      ));
+    });
+  }
+
+  QueryBuilder<ItemTask, ItemTask, QAfterFilterCondition> prefabIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'prefabId',
+      ));
+    });
+  }
+
+  QueryBuilder<ItemTask, ItemTask, QAfterFilterCondition> prefabIdEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'prefabId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemTask, ItemTask, QAfterFilterCondition> prefabIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'prefabId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemTask, ItemTask, QAfterFilterCondition> prefabIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'prefabId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemTask, ItemTask, QAfterFilterCondition> prefabIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'prefabId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<ItemTask, ItemTask, QAfterFilterCondition> subValueEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -964,6 +1042,18 @@ extension ItemTaskQuerySortBy on QueryBuilder<ItemTask, ItemTask, QSortBy> {
     });
   }
 
+  QueryBuilder<ItemTask, ItemTask, QAfterSortBy> sortByPrefabId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'prefabId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ItemTask, ItemTask, QAfterSortBy> sortByPrefabIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'prefabId', Sort.desc);
+    });
+  }
+
   QueryBuilder<ItemTask, ItemTask, QAfterSortBy> sortBySubValue() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'subValue', Sort.asc);
@@ -1075,6 +1165,18 @@ extension ItemTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<ItemTask, ItemTask, QAfterSortBy> thenByPrefabId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'prefabId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ItemTask, ItemTask, QAfterSortBy> thenByPrefabIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'prefabId', Sort.desc);
+    });
+  }
+
   QueryBuilder<ItemTask, ItemTask, QAfterSortBy> thenBySubValue() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'subValue', Sort.asc);
@@ -1150,6 +1252,12 @@ extension ItemTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ItemTask, ItemTask, QDistinct> distinctByPrefabId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'prefabId');
+    });
+  }
+
   QueryBuilder<ItemTask, ItemTask, QDistinct> distinctBySubValue() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'subValue');
@@ -1205,6 +1313,12 @@ extension ItemTaskQueryProperty
   QueryBuilder<ItemTask, bool, QQueryOperations> isCompletedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isCompleted');
+    });
+  }
+
+  QueryBuilder<ItemTask, int?, QQueryOperations> prefabIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'prefabId');
     });
   }
 

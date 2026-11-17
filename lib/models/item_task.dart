@@ -7,6 +7,8 @@ part 'item_task.g.dart';
 class ItemTask {
   Id id = Isar.autoIncrement;
 
+  int? prefabId;
+
   late String title;
 
   @enumerated
