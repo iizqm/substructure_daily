@@ -80,7 +80,7 @@ class _ScreenButton extends StatelessWidget {
       onTap: () {
         if (!isActive) {
           Navigator.pop(context);
-          Navigator.pushNamed(context, screen);
+          Navigator.pushReplacementNamed(context, screen);
         }
       },
     );

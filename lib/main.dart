@@ -29,6 +29,21 @@ void main() async {
           fontFamily: 'Ticketing',
         ),
       ),
+      builder: (context, child) {
+        return Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromARGB(255, 37, 37, 37),
+                Color.fromARGB(255, 37, 37, 37),
+              ],
+            ),
+          ),
+          child: child,
+        );
+      },
       initialRoute: '/',
       onGenerateRoute: (settings) {
         Widget page;
